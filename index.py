@@ -1,6 +1,5 @@
 import requests
-
-API_KEY = 'c64638c147854d759e279e1bb3fdf789'
+from keys import API_KEY
 
 # Ingredients to search for based on user input 
 ingredients = input("Enter ingredients separated by commas: ").split(',')
