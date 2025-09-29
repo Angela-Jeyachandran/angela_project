@@ -105,8 +105,16 @@ if __name__ == "__main__":
     # User chooses signup
     if choice == "1":
         u = input("Enter username: ")
-        p = pwinput.pwinput(prompt='Enter password: ', mask='*')
-        success, msg = signup(u, p)
+        
+        while True:
+            p1 = pwinput.pwinput(prompt='Enter password: ', mask='*')
+            p2 = pwinput.pwinput(prompt='Confirm password: ', mask='*')
+            if p1 != p2:
+                print("Passwords do not match.")
+            else:
+                break
+        
+        success, msg = signup(u, p1)
         print(msg)
         if success:
             # Go to main menu if signup worked
