@@ -1,6 +1,8 @@
 import requests
 from keys import API_KEY
 import json, os
+import pwinput
+
 
 USER_FILE = "users.json"
 
@@ -103,7 +105,7 @@ if __name__ == "__main__":
     # User chooses signup
     if choice == "1":
         u = input("Enter username: ")
-        p = input("Enter password: ")
+        p = pwinput.pwinput(prompt='Enter password: ', mask='*')
         success, msg = signup(u, p)
         print(msg)
         if success:
@@ -112,7 +114,7 @@ if __name__ == "__main__":
     # User chooses login 
     elif choice == "2":
         u = input("Enter username: ")
-        p = input("Enter password: ")
+        p = pwinput.pwinput(prompt='Enter password: ', mask='*')
         success, msg = login(u, p)
         print(msg)
         if success:
