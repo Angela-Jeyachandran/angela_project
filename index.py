@@ -1,7 +1,7 @@
 import requests
 from keys import API_KEY
 import json, os
-import pwinput
+#import pwinput
 
 
 USER_FILE = "users.json"
@@ -9,10 +9,15 @@ USER_FILE = "users.json"
 def search_recipes():
     # Ingredients to search for based on user input 
     ingredients = input("Enter ingredients separated by commas: ").split(',')
-    ingredients = [i.strip() for i in ingredients]
 
+    ingredients = [i.strip() for i in ingredients]
+    
     # Comma separated string for API
     ingredients_query = ','.join(ingredients)
+    
+    # User input for cuisine
+    cuisine = input("Enter cuisine (or leave blank for any): ").strip()
+
 
     # API endpoint for searching recipes by ingredients
     url = 'https://api.spoonacular.com/recipes/findByIngredients'
@@ -20,7 +25,7 @@ def search_recipes():
     # Parameters for the request
     params = {
         'ingredients': ingredients_query,
-        'number': 10,  # Number of recipes to return
+        'number': 3,  # Number of recipes to return
         'ranking': 1,  # 1 = maximize used ingredients, 2 = minimize missing ingredients
         'ignorePantry': True,
         'apiKey': API_KEY
@@ -32,6 +37,27 @@ def search_recipes():
     # Check for success
     if response.status_code == 200:
         recipes = response.json()
+        
+        
+                # Filter recipes by cuisine if the user entered one
+        if cuisine:
+            filtered_recipes = []
+            for recipe in recipes:
+                info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
+                info_params = {'apiKey': API_KEY}
+                info_response = requests.get(info_url, params=info_params)
+                if info_response.status_code == 200:
+                    info = info_response.json()
+                    print(recipe['title'], info.get('cuisines'))
+                    # check if the cuisine matches any of the cuisines listed in the recipe
+                    if cuisine.lower() in [c.lower() for c in info.get('cuisines', [])]:
+                        filtered_recipes.append(recipe)
+                # stop once we have 3 matching recipes
+                if len(filtered_recipes) == 3:
+                    break
+            recipes = filtered_recipes
+
+        
         for i, recipe in enumerate(recipes, start=1):
             print(f"{i}. {recipe['title']}")
             print(f"   Used Ingredients: {[ing['name'] for ing in recipe['usedIngredients']]}")
@@ -41,7 +67,7 @@ def search_recipes():
             print()
     else:
         print(f"Error: {response.status_code} - {response.text}")
-
+'''
 def load_users():
     # If the user file does not exist, create it with an empty "users" list
     if not os.path.exists(USER_FILE):
@@ -78,9 +104,10 @@ def login(username, password):
             return True, f"Welcome back, {username}!"
     # If not found, login fails
     return False, "Invalid username or password."
-
-def main_menu(username):
+'''
+def main_menu():
     # Menu shown after a user logs in
+    '''
     while True:
         print("Main Menu")
         print("1. Search Recipes")   # Option to call the recipe search feature
@@ -95,8 +122,12 @@ def main_menu(username):
             break  
         else:
             print("Invalid choice, try again.")
+    '''
+    search_recipes()
 
 if __name__ == "__main__":
+    main_menu()
+    '''
     # Entry point of the program
     print("1. Signup")
     print("2. Login")
@@ -130,3 +161,4 @@ if __name__ == "__main__":
             main_menu(u)
     else:
         print("Invalid choice.")
+        '''
