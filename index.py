@@ -6,18 +6,9 @@ import json, os
 
 USER_FILE = "users.json"
 
-def search_recipes():
-    # Ingredients to search for based on user input 
-    ingredients = input("Enter ingredients separated by commas: ").split(',')
-
-    ingredients = [i.strip() for i in ingredients]
-    
+def search_recipes(ingredients, api_key, number=3, cuisine=""):
     # Comma separated string for API
-    ingredients_query = ','.join(ingredients)
-    
-    # User input for cuisine
-    cuisine = input("Enter cuisine (or leave blank for any): ").strip()
-
+    ingredients_query = ','.join([i.strip() for i in ingredients])
 
     # API endpoint for searching recipes by ingredients
     url = 'https://api.spoonacular.com/recipes/findByIngredients'
@@ -111,6 +102,22 @@ def login(username, password):
     return False, "Invalid username or password."
 '''
 def main_menu():
+    
+    print("Welome to the Leftover Recipe Generator!")
+    # Ask user for ingredients
+    ingredients_input = input("Enter ingredients you have (separated by commas): ").strip()
+    ingredients = [i.strip() for i in ingredients_input.split(",")]
+
+    # Ask user for optional cuisine
+    cuisine = input("Enter a cuisine (or leave blank for any): ").strip()
+
+    # Ask user how many recipes to display
+    number_input = input("How many recipes would you like to see? (default 3): ").strip()
+    number = int(number_input) if number_input.isdigit() else 3
+
+    # Call the refactored function
+    search_recipes(ingredients, API_KEY, number=number, cuisine=cuisine)
+    
     '''
     # Menu shown after a user logs in
     while True:
@@ -128,7 +135,6 @@ def main_menu():
         else:
             print("Invalid choice, try again.")
     '''
-    search_recipes()
 
 if __name__ == "__main__":
     main_menu()
