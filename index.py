@@ -39,7 +39,7 @@ def search_recipes():
         recipes = response.json()
         
         
-                # Filter recipes by cuisine if the user entered one
+        # Filter recipes by cuisine if the user entered one
         if cuisine:
             filtered_recipes = []
             for recipe in recipes:
@@ -48,14 +48,19 @@ def search_recipes():
                 info_response = requests.get(info_url, params=info_params)
                 if info_response.status_code == 200:
                     info = info_response.json()
-                    print(recipe['title'], info.get('cuisines'))
                     # check if the cuisine matches any of the cuisines listed in the recipe
                     if cuisine.lower() in [c.lower() for c in info.get('cuisines', [])]:
                         filtered_recipes.append(recipe)
                 # stop once we have 3 matching recipes
                 if len(filtered_recipes) == 3:
                     break
-            recipes = filtered_recipes
+                
+            
+            if filtered_recipes:
+                recipes = filtered_recipes
+            else:
+                print(f"No recipes found for cuisine: {cuisine}")
+                recipes = []  # optional: clear the recipes list if none match
 
         
         for i, recipe in enumerate(recipes, start=1):
@@ -106,8 +111,8 @@ def login(username, password):
     return False, "Invalid username or password."
 '''
 def main_menu():
-    # Menu shown after a user logs in
     '''
+    # Menu shown after a user logs in
     while True:
         print("Main Menu")
         print("1. Search Recipes")   # Option to call the recipe search feature
@@ -127,6 +132,7 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
+    
     '''
     # Entry point of the program
     print("1. Signup")
