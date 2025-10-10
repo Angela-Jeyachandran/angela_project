@@ -6,6 +6,17 @@ import json, os
 
 USER_FILE = "users.json"
 
+# Gets substitute ingredients for a given ingredient using the Spoonacular API
+def get_substitutes(ingredient):
+    url = "https://api.spoonacular.com/food/ingredients/substitutes"
+    params = {"ingredientName": ingredient, "apiKey": API_KEY}
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        if data.get("substitutes"):
+            return data["substitutes"]
+    return []
+
 def search_recipes(ingredients, api_key, number=3, cuisine=""):
     # Comma separated string for API
     ingredients_query = ','.join([i.strip() for i in ingredients])
@@ -51,18 +62,27 @@ def search_recipes(ingredients, api_key, number=3, cuisine=""):
                 recipes = filtered_recipes
             else:
                 print(f"No recipes found for cuisine: {cuisine}")
-                recipes = []  # optional: clear the recipes list if none match
+                recipes = []
 
         
         for i, recipe in enumerate(recipes, start=1):
             print(f"{i}. {recipe['title']}")
             used = [ing['name'] for ing in recipe['usedIngredients']]
             missed = [ing['name'] for ing in recipe['missedIngredients']]
-            print(f"   Used Ingredients: {[ing['name'] for ing in recipe['usedIngredients']]}")
-            print(f"   Missed Ingredients: {[ing['name'] for ing in recipe['missedIngredients']]}")
+            print(f"   Used Ingredients: {used}")
+            print(f"   Missed Ingredients:")
+            # Creates an instacart link for the missing ingredients 
             for ing in missed:
                 instacart_link = f"https://www.instacart.com/store/search?q={ing.replace(' ', '+')}"
                 print(f"     - {ing} → {instacart_link}")
+                
+                # substitution possibilities
+                substitutes = get_substitutes(ing)
+                if substitutes:
+                    print(f"       Substitutes: {', '.join(substitutes)}")
+                else:
+                    sub_link = f"https://www.google.com/search?q={ing.replace(' ', '+')}+ingredient+substitute"
+                    print(f"       Find substitutes → {sub_link}")
             print(f"   Recipe ID: {recipe['id']}")
             print(f"   Image URL: {recipe['image']}")
             print()
