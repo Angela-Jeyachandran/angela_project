@@ -86,6 +86,7 @@ def search_recipes(ingredients, api_key, number=3, cuisine=""):
             print(f"   Recipe ID: {recipe['id']}")
             print(f"   Image URL: {recipe['image']}")
             print()
+            print()
     else:
         print(f"Error: {response.status_code} - {response.text}")
 '''
@@ -139,6 +140,8 @@ def main_menu():
     # Ask user how many recipes to display
     number_input = input("How many recipes would you like to see? (default 3): ").strip()
     number = int(number_input) if number_input.isdigit() else 3
+    print("-----------------------------------------------------")
+    print()
 
     # Call the refactored function
     search_recipes(ingredients, API_KEY, number=number, cuisine=cuisine)
