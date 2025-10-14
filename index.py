@@ -1,6 +1,7 @@
 import requests
 from keys import API_KEY
 import json, os
+import sys
 #import pwinput
 
 
@@ -129,22 +130,43 @@ def login(username, password):
 '''
 def main_menu():
     
-    print("Welome to the Leftover Recipe Generator!")
-    # Ask user for ingredients
-    ingredients_input = input("Enter ingredients you have (separated by commas): ").strip()
-    ingredients = [i.strip() for i in ingredients_input.split(",")]
-
-    # Ask user for optional cuisine
-    cuisine = input("Enter a cuisine (or leave blank for any): ").strip()
-
-    # Ask user how many recipes to display
-    number_input = input("How many recipes would you like to see? (default 3): ").strip()
-    number = int(number_input) if number_input.isdigit() else 3
+    print("Welcome to the Leftover Recipe Generator!")
     print("-----------------------------------------------------")
     print()
+    # User can choose to search or exit app
+    print("1. Search for recipes")
+    print("2. Exit")
+    print()
+    print("-----------------------------------------------------")
+    choice = input("Choose an option (1 or 2): ").strip()
+    print()
+    
+    # if 1 entered user can search
+    if choice == "1":
+        # Ask user for ingredients
+        ingredients_input = input("Enter ingredients you have (separated by commas): ").strip()
+        ingredients = [i.strip() for i in ingredients_input.split(",")]
 
-    # Call the refactored function
-    search_recipes(ingredients, API_KEY, number=number, cuisine=cuisine)
+        # Ask user for optional cuisine
+        cuisine = input("Enter a cuisine (or leave blank for any): ").strip()
+
+        # Ask user how many recipes to display
+        number_input = input("How many recipes would you like to see? (default 3): ").strip()
+        number = int(number_input) if number_input.isdigit() else 3
+        print("-----------------------------------------------------")
+        print()
+
+        # Call the refactored function
+        search_recipes(ingredients, API_KEY, number=number, cuisine=cuisine)
+    
+    # if 2 entered app ends
+    elif choice == "2":
+        print()
+        print("Thanks for using the Leftover Recipe Generator! Come back soon!")
+        sys.exit(0)  
+        
+    else:
+        print("Invalid choice. please try again.\n")
     
     '''
     # Menu shown after a user logs in
