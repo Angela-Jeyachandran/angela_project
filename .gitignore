@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 keys.py
 users.json
+archived_login_code.py
 
 # C extensions
 *.so
