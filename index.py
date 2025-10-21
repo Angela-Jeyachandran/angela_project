@@ -28,7 +28,7 @@ def search_recipes(ingredients, api_key, number=3, cuisine=""):
     # Parameters for the request
     params = {
         'ingredients': ingredients_query,
-        'number': 3,  # Number of recipes to return
+        'number': number,  # Number of recipes to return
         'ranking': 1,  # 1 = maximize used ingredients, 2 = minimize missing ingredients
         'ignorePantry': True,
         'apiKey': API_KEY
