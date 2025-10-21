@@ -1,9 +1,8 @@
 import requests
-#from keys import API_KEY
+from keys import API_KEY
 import json, os
 import sys
 #import pwinput
-API_KEY = "7da392f47b7e41af9a9f44752d8ce074"
 
 USER_FILE = "users.json"
 
@@ -32,7 +31,8 @@ def search_recipes(ingredients, API_KEY, number=3, cuisine=""): # CH: must be AP
         'ranking': 1,  # 1 = maximize used ingredients, 2 = minimize missing ingredients
         'ignorePantry': True,
         'apiKey': API_KEY
-    }
+    } 
+
 
     # Make the request
     response = requests.get(url, params=params)
