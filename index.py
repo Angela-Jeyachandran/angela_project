@@ -11,7 +11,7 @@ USER_FILE = "users.json"
 def get_substitutes(ingredient):
     url = "https://api.spoonacular.com/food/ingredients/substitutes"
     params = {"ingredientName": ingredient, "apiKey": API_KEY}
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=30)
     if response.status_code == 200:
         data = response.json()
         if data.get("substitutes"):
@@ -35,7 +35,7 @@ def search_recipes(ingredients, api_key, number=3, cuisine=""):
     }
 
     # Make the request
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=30)
 
     # Check for success
     if response.status_code == 200:
@@ -48,7 +48,7 @@ def search_recipes(ingredients, api_key, number=3, cuisine=""):
             for recipe in recipes:
                 info_url = f"https://api.spoonacular.com/recipes/{recipe['id']}/information"
                 info_params = {'apiKey': API_KEY}
-                info_response = requests.get(info_url, params=info_params)
+                info_response = requests.get(info_url, params=info_params, timeout=30)
                 if info_response.status_code == 200:
                     info = info_response.json()
                     # check if the cuisine matches any of the cuisines listed in the recipe
