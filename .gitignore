@@ -5,6 +5,8 @@ __pycache__/
 keys.py
 users.json
 archived_login_code.py
+node_modules/
+.env
 
 # C extensions
 *.so
