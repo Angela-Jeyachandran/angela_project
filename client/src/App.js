@@ -1,19 +1,41 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function App() {
-  const [message, setMessage] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [recipes, setRecipes] = useState([]);
 
-  useEffect(() => {
-    fetch('http://localhost:5001/')
-      .then(res => res.text())
-      .then(data => setMessage(data))
-      .catch(err => console.error(err));
-  }, []);
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5001/api/recipes?ingredients=${ingredients}`
+      );
+      setRecipes(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div>
       <h1>Leftover Recipe Finder</h1>
-      <p>Backend says: {message}</p>
+
+      <input
+        type="text"
+        value={ingredients}
+        onChange={e => setIngredients(e.target.value)}
+        placeholder="Enter ingredients, comma-separated"
+      />
+      <button onClick={handleSearch}>Search</button>
+
+      <ul>
+        {recipes.map(recipe => (
+          <li key={recipe.id}>
+            <h3>{recipe.title}</h3>
+            <img src={recipe.image} alt={recipe.title} width={100} />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
