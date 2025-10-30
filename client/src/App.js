@@ -33,6 +33,21 @@ function App() {
           <li key={recipe.id}>
             <h3>{recipe.title}</h3>
             <img src={recipe.image} alt={recipe.title} width={100} />
+
+            <p><strong>Used Ingredients:</strong></p>
+      <ul>
+        {recipe.usedIngredients?.map(ing => (
+          <li key={ing.id}>{ing.name}</li>
+        ))}
+      </ul>
+
+      <p><strong>Missing Ingredients:</strong></p>
+      <ul>
+        {recipe.missedIngredients?.map(ing => (
+          <li key={ing.id}>{ing.name}</li>
+        ))}
+      </ul>
+      
           </li>
         ))}
       </ul>
